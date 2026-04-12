@@ -17,17 +17,17 @@ func main() {
 	//	"backoff", time.Second,
 	//) // like fmt.Printf()
 
-	// logger use in
-	//logger := zap.NewExample()
-	//logger.Info("Hello", zap.String("name", "John"), zap.Int("age", 25))
+	// logger.go use in
+	//logger.go := zap.NewExample()
+	//logger.go.Info("Hello", zap.String("name", "John"), zap.Int("age", 25))
 	//
-	//logger.Info("Hello NewExample")
+	//logger.go.Info("Hello NewExample")
 	//
-	//logger, _ = zap.NewDevelopment()
-	//logger.Info("Hello NewDevelopment")
+	//logger.go, _ = zap.NewDevelopment()
+	//logger.go.Info("Hello NewDevelopment")
 	//
-	//logger, _ = zap.NewProduction()
-	//logger.Info("Hello NewProduction")
+	//logger.go, _ = zap.NewProduction()
+	//logger.go.Info("Hello NewProduction")
 
 	//
 	encoder := getEncoderLog()

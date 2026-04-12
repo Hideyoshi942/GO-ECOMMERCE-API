@@ -15,7 +15,7 @@ type ApiResponse struct {
 func SuccessResponse(c *gin.Context, code int, message string, data interface{}) {
 	c.JSON(http.StatusOK, ApiResponse{
 		Code:    code,
-		Message: message,
+		Message: msg[code],
 		Data:    data,
 	})
 }
@@ -23,6 +23,6 @@ func SuccessResponse(c *gin.Context, code int, message string, data interface{})
 func ErrorResponse(c *gin.Context, code int, message string) {
 	c.JSON(http.StatusOK, ApiResponse{
 		Code:    code,
-		Message: message,
+		Message: msg[code],
 	})
 }

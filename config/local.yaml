@@ -1,2 +1,31 @@
 server:
   port: 8080
+mysql:
+  host: 127.0.0.1
+  port: 3306
+  username: root
+  password: root
+  dbname: ecommerce
+  maxIdleConns: 10
+  maxOpenConns: 100
+  maxLifetime: 300
+  maxIdleTime: 300
+  maxRetries: 3
+  retryInterval: 5
+  readTimeout: 5
+  writeTimeout: 5
+  timeout: 5
+  idleTimeout: 5
+logger:
+  log_level: debug
+  file_log_name: "./storages/logs/dev.001.log"
+  max_size: 500
+  max_backups: 3
+  max_age: 28
+  compress: true
+redis:
+  host: 127.0.0.1
+  port: 6379
+  password:
+  db: 0
+  pool_size: 10
