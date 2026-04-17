@@ -1,16 +1,27 @@
 package user
 
-import "github.com/gin-gonic/gin"
+import (
+	"go-ecomerce-backend-api/internal/controller"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
 
 type UserRouter struct {
 }
 
 func (pr *UserRouter) InitUserRouter(Router *gin.RouterGroup) {
+	userController := controller.NewUserController()
+
 	// public router
 	userRouterPublic := Router.Group("/user")
 	{
-		userRouterPublic.POST("/register") // register -> YES <-> NO
-		userRouterPublic.POST("/otp")
+		userRouterPublic.POST("/register", func(c *gin.Context) {
+			c.JSON(http.StatusNotImplemented, gin.H{"message": "register endpoint is not implemented yet"})
+		})
+		userRouterPublic.POST("/otp", func(c *gin.Context) {
+			c.JSON(http.StatusNotImplemented, gin.H{"message": "otp endpoint is not implemented yet"})
+		})
 	}
 
 	// private router
@@ -19,6 +30,6 @@ func (pr *UserRouter) InitUserRouter(Router *gin.RouterGroup) {
 	//userRouterPrivate.Use(middlewares.JWTAuth()).Use(middlewares.CORS())
 	//userRouterPrivate.Use(middlewares.PermissionCheck())
 	{
-		userRouterPrivate.GET("/get_info")
+		userRouterPrivate.GET("/get_info", userController.GetUserById)
 	}
 }

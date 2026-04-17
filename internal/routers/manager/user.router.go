@@ -1,6 +1,10 @@
 package manager
 
-import "github.com/gin-gonic/gin"
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
 
 type UserRouter struct {
 }
@@ -19,6 +23,8 @@ func (pr *UserRouter) InitUserRouter(Router *gin.RouterGroup) {
 	//userRouterPrivate.Use(middlewares.JWTAuth()).Use(middlewares.CORS())
 	//userRouterPrivate.Use(middlewares.PermissionCheck())
 	{
-		userRouterPrivate.POST("/active_user")
+		userRouterPrivate.POST("/active_user", func(c *gin.Context) {
+			c.JSON(http.StatusNotImplemented, gin.H{"message": "manager active_user endpoint is not implemented yet"})
+		})
 	}
 }

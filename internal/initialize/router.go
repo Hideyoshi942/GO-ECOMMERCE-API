@@ -2,21 +2,15 @@ package initialize
 
 import (
 	"go-ecomerce-backend-api/global"
+	"go-ecomerce-backend-api/internal/controller"
 	"go-ecomerce-backend-api/internal/routers"
 
 	"github.com/gin-gonic/gin"
 )
 
 func InitRouter() *gin.Engine {
-	var r *gin.Engine
-	if global.Config.Server.Mode == "dev" {
-		gin.SetMode(gin.DebugMode)
-		gin.ForceConsoleColor()
-		r = gin.Default()
-	} else {
-		gin.SetMode(gin.ReleaseMode)
-		r = gin.New()
-	}
+	r := routers.NewRouter(global.Config.Server.Mode)
+	pongController := controller.NewPongController()
 
 	// middlewares
 	//r.Use() // logging
@@ -27,7 +21,7 @@ func InitRouter() *gin.Engine {
 
 	MainGroup := r.Group("/api/v1/2026")
 	{
-		MainGroup.GET("/checkStatus") // tracking monitor
+		MainGroup.GET("/checkStatus", pongController.Pong) // tracking monitor
 	}
 	{
 		userRouter.InitUserRouter(MainGroup)

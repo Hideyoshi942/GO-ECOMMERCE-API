@@ -41,7 +41,7 @@ func SetPool() {
 
 	sqlDb, err := global.Mdb.DB()
 	if err != nil {
-		fmt.Println("MySql error: %s::", err)
+		fmt.Printf("MySql error: %v\n", err)
 	}
 	sqlDb.SetConnMaxIdleTime(time.Duration(m.MaxIdleTime))
 	sqlDb.SetMaxIdleConns(m.MaxIdleConns)
@@ -56,6 +56,6 @@ func MigrateTables() {
 	)
 
 	if err != nil {
-		fmt.Println("MySql error: %s::", err)
+		fmt.Printf("MySql error: %v\n", err)
 	}
 }
