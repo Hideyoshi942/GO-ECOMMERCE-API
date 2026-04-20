@@ -9,7 +9,7 @@ import (
 type UserRouter struct {
 }
 
-func (pr *UserRouter) InitUserRouter(Router *gin.RouterGroup) {
+func (pr *UserRouter) InitAdminUserRouter(Router *gin.RouterGroup) {
 	//// public router
 	//userRouterPublic := Router.Group("/admin/user")
 	//{
@@ -18,7 +18,7 @@ func (pr *UserRouter) InitUserRouter(Router *gin.RouterGroup) {
 	//}
 
 	// private router
-	userRouterPrivate := Router.Group("/admin/user")
+	userRouterPrivate := Router.Group("/admin/private/user")
 	//userRouterPrivate.Use(middlewares.Limiter())
 	//userRouterPrivate.Use(middlewares.JWTAuth()).Use(middlewares.CORS())
 	//userRouterPrivate.Use(middlewares.PermissionCheck())

@@ -22,7 +22,7 @@ func (pr *ProductRouter) InitProductRouter(Router *gin.RouterGroup) {
 	}
 
 	// private router
-	productRouterPrivate := Router.Group("/product")
+	productRouterPrivate := Router.Group("/product/private")
 	{
 		productRouterPrivate.GET("/search", func(c *gin.Context) {
 			c.JSON(http.StatusNotImplemented, gin.H{"message": "private search endpoint is not implemented yet"})

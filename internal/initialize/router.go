@@ -29,7 +29,7 @@ func InitRouter() *gin.Engine {
 	}
 	{
 		manageRouter.InitAdminRouter(MainGroup)
-		manageRouter.InitUserRouter(MainGroup)
+		manageRouter.InitAdminUserRouter(MainGroup)
 	}
 	return r
 }

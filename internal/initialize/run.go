@@ -21,7 +21,7 @@ func Run() {
 
 	r := InitRouter()
 
-	if err := r.Run(":8080"); err != nil {
+	if err := r.Run(":8082"); err != nil {
 		log.Fatalf("failed to start server: %v", err)
 	}
 }

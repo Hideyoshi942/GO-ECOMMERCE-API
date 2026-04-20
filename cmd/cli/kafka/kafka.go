@@ -1,9 +1,10 @@
-package kafka
+package main
 
 import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"os"
 	"strings"
 	"time"
 
@@ -16,9 +17,16 @@ var (
 )
 
 const (
-	kafkaURL   = "localhost:9092"
+	defaultKafkaURL = "localhost:9092"
 	kafkaTopic = "user_topic_vip"
 )
+
+func getKafkaURL() string {
+	if v := os.Getenv("KAFKA_BROKER"); v != "" {
+		return v
+	}
+	return defaultKafkaURL
+}
 
 // for producer
 func getKafkaWriter(kafkaURL, topic string) *kafka.Writer {
@@ -85,13 +93,13 @@ func actionStock(c *gin.Context) {
 }
 
 // consumer see buy ATC
-func RegisterConsumerATC(id int) {
+func RegisterConsumerATC(id int, kafkaURL string) {
 	// group consumer??
 	kafkaGroupId := "consumer-group-"
 	reader := getKafkaReader(kafkaURL, kafkaTopic, kafkaGroupId)
 	defer reader.Close()
 
-	fmt.Printf("Consumer(%d) Hong Phien ATC::", id)
+	fmt.Printf("Consumer(%d) Hong Chuyen ATC::", id)
 	for {
 		m, err := reader.ReadMessage(context.Background())
 		if err != nil {
@@ -103,14 +111,15 @@ func RegisterConsumerATC(id int) {
 
 func main() {
 	r := gin.Default()
+	kafkaURL := getKafkaURL()
 	kafkaProducer = getKafkaWriter(kafkaURL, kafkaTopic)
 	defer kafkaProducer.Close()
 
 	r.POST("/action/stock", actionStock)
 
 	// regist 2 user buy stock in ATC (1) (2)
-	go RegisterConsumerATC(1)
-	go RegisterConsumerATC(2)
+	go RegisterConsumerATC(1, kafkaURL)
+	go RegisterConsumerATC(2, kafkaURL)
 
-	r.Run(":8999")
+	r.Run(":9099")
 }
