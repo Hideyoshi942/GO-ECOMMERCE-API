@@ -18,7 +18,7 @@ var (
 
 const (
 	defaultKafkaURL = "localhost:9092"
-	kafkaTopic = "user_topic_vip"
+	kafkaTopic      = "user_topic_vip"
 )
 
 func getKafkaURL() string {
@@ -95,11 +95,11 @@ func actionStock(c *gin.Context) {
 // consumer see buy ATC
 func RegisterConsumerATC(id int, kafkaURL string) {
 	// group consumer??
-	kafkaGroupId := "consumer-group-"
+	kafkaGroupId := fmt.Sprintf("consumer-group- %d", id) // "consumer-group-"
 	reader := getKafkaReader(kafkaURL, kafkaTopic, kafkaGroupId)
 	defer reader.Close()
 
-	fmt.Printf("Consumer(%d) Hong Chuyen ATC::", id)
+	fmt.Printf("Consumer(%d) Hong Chuyen ATC:: \n", id)
 	for {
 		m, err := reader.ReadMessage(context.Background())
 		if err != nil {
@@ -120,6 +120,7 @@ func main() {
 	// regist 2 user buy stock in ATC (1) (2)
 	go RegisterConsumerATC(1, kafkaURL)
 	go RegisterConsumerATC(2, kafkaURL)
+	go RegisterConsumerATC(3, kafkaURL)
 
 	r.Run(":9099")
 }
