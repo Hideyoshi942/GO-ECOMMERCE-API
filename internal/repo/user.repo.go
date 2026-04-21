@@ -1,17 +1,33 @@
 package repo
 
-import "github.com/gin-gonic/gin"
+//type UserRepo struct{}
+//
+//func NewUserRepo() *UserRepo {
+//	return &UserRepo{}
+//}
+//
+//func (ur *UserRepo) GetInfoUser() string {
+//	return "hideyoshi"
+//}
+//
+//func (p *UserRepo) FindByUsername(c *gin.Context) {
+//
+//}
 
-type UserRepo struct{}
+// Interface_Version
 
-func NewUserRepo() *UserRepo {
-	return &UserRepo{}
+type IUserRepository interface {
+	GetUserByEmail(email string) bool
+	NewUserRepository
 }
 
-func (ur *UserRepo) GetInfoUser() string {
-	return "hideyoshi"
+type userRepository struct {
 }
 
-func (p *UserRepo) FindByUsername(c *gin.Context) {
+func (u userRepository) GetUserByEmail(email string) bool {
+	return true
+}
 
+func NewUserRepository() IUserRepository {
+	return &userRepository{}
 }
