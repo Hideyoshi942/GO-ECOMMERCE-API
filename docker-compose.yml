@@ -1,0 +1,106 @@
+services:
+  # Main Go API service.
+  app:
+    # Build image from local source using Dockerfile in project root.
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # Local tag name for the built app image.
+    image: crm.shopdev.com
+    # Inject runtime environment variables into the container.
+    env_file:
+      - .env
+    # Expose container port 8080 to host port 8001.
+    ports:
+      - "8001:8080"
+    # Start app after dependencies are ready.
+    depends_on:
+      # Wait until MySQL healthcheck passes before starting app.
+      database:
+        condition: service_healthy
+      # Redis only needs to be started (no healthcheck configured).
+      redis:
+        condition: service_started
+
+  # Apache Kafka single-node broker running in KRaft mode.
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: kafka
+    # Expose broker external listener to host.
+    ports:
+      - "9092:9092"
+    environment:
+      # KRaft mode
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_NODE_ID: 1
+
+      # Controller quorum
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+
+      # Listeners
+      KAFKA_LISTENERS: PLAINTEXT://kafka:29092,EXTERNAL://0.0.0.0:9092,CONTROLLER://kafka:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,EXTERNAL://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+
+      # Single node config
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+
+      # Required for KRaft
+      CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
+
+    # Persist broker logs and metadata on host.
+    volumes:
+      - ./kafka_data:/var/lib/kafka/data
+
+  # Web UI for browsing Kafka clusters, topics, and messages.
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    # UI available on host port 8080.
+    ports:
+      - "8080:8080"
+    # Kafka UI starts after Kafka container starts.
+    depends_on:
+      - kafka
+    environment:
+      # Display name for the configured cluster in UI.
+      KAFKA_CLUSTERS_0_NAME: local
+      # Internal broker address reachable inside compose network.
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+
+  # MySQL database service for application data.
+  database:
+    image: mysql:8.0.45-debian
+    container_name: mysql-8
+    # Expose MySQL default port to host.
+    ports:
+      - "3306:3306"
+    environment:
+      # Root password and initial database name used at first startup.
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=ecommerce
+    # Healthcheck ensures DB is ready for app connections.
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -proot --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+    # Persist MySQL data files on host.
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+
+  # Redis cache service.
+  redis:
+    image: redis:latest
+    container_name: redis
+    # Expose Redis default port to host.
+    ports:
+      - "6379:6379"
+    # Persist Redis data (RDB/AOF) on host.
+    volumes:
+      - ./redis_data:/data

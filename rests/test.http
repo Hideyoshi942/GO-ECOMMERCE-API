@@ -1,0 +1,3 @@
+### check status by docker
+
+GET http://localhost:8081/v1/2026/check

@@ -61,7 +61,7 @@ func genTableDAO() {
 
 	g.UseDB(global.Mdb)
 	//g.GenerateAllTable()
-	g.GenerateModel("users", gen.FieldIgnore("password"))
+	//g.GenerateModel("users", gen.FieldIgnore("password"))
 	g.Execute()
 }
 

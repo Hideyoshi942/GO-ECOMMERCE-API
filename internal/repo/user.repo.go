@@ -18,7 +18,6 @@ package repo
 
 type IUserRepository interface {
 	GetUserByEmail(email string) bool
-	NewUserRepository
 }
 
 type userRepository struct {

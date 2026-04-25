@@ -1,32 +1,32 @@
 server:
-  port: 8080
-  mode: "dev"
+  port: ${SERVER_PORT}
+  mode: ${SERVER_MODE}
 mysql:
-  host: 127.0.0.1
-  port: 3306
-  username: root
-  password: root
-  dbname: ecommerce
-  maxIdleConns: 10
-  maxOpenConns: 100
-  maxLifetime: 300
-  maxIdleTime: 300
-  maxRetries: 3
-  retryInterval: 5
-  readTimeout: 5
-  writeTimeout: 5
-  timeout: 5
-  idleTimeout: 5
+  host: ${MYSQL_HOST}
+  port: ${MYSQL_PORT}
+  username: ${MYSQL_USERNAME}
+  password: ${MYSQL_PASSWORD}
+  dbname: ${MYSQL_DBNAME}
+  maxIdleConns: ${MYSQL_MAX_IDLE_CONNS}
+  maxOpenConns: ${MYSQL_MAX_OPEN_CONNS}
+  maxLifetime: ${MYSQL_MAX_LIFETIME}
+  maxIdleTime: ${MYSQL_MAX_IDLE_TIME}
+  maxRetries: ${MYSQL_MAX_RETRIES}
+  retryInterval: ${MYSQL_RETRY_INTERVAL}
+  readTimeout: ${MYSQL_READ_TIMEOUT}
+  writeTimeout: ${MYSQL_WRITE_TIMEOUT}
+  timeout: ${MYSQL_TIMEOUT}
+  idleTimeout: ${MYSQL_IDLE_TIMEOUT}
 logger:
-  log_level: debug
-  file_log_name: "./storages/logs/dev.001.log"
-  max_size: 500
-  max_backups: 3
-  max_age: 28
-  compress: true
+  log_level: ${LOGGER_LOG_LEVEL}
+  file_log_name: ${LOGGER_FILE_LOG_NAME}
+  max_size: ${LOGGER_MAX_SIZE}
+  max_backups: ${LOGGER_MAX_BACKUPS}
+  max_age: ${LOGGER_MAX_AGE}
+  compress: ${LOGGER_COMPRESS}
 redis:
-  host: 127.0.0.1
-  port: 6379
-  password:
-  db: 0
-  pool_size: 10
+  host: ${REDIS_HOST}
+  port: ${REDIS_PORT}
+  password: "${REDIS_PASSWORD}"
+  db: ${REDIS_DB}
+  pool_size: ${REDIS_POOL_SIZE}
