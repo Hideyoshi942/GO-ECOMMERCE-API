@@ -1,10 +1,12 @@
 services:
   # Main Go API service.
   app:
+    container_name: go_backend_crm_shopdev
     # Build image from local source using Dockerfile in project root.
     build:
       context: .
       dockerfile: Dockerfile
+    restart: always
     # Local tag name for the built app image.
     image: crm.shopdev.com
     # Inject runtime environment variables into the container.
