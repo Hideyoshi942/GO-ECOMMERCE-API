@@ -69,3 +69,4 @@ Thumbs.db
 # Uncomment if your team does not commit vendor.
 # -----------------------------
 # vendor/
+*.csv
