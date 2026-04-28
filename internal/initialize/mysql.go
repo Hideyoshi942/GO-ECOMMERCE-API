@@ -30,6 +30,10 @@ func InitMysql() {
 	global.Logger.Info("Connected to MySQL database")
 	global.Mdb = db
 
+	sqlDB, err := global.Mdb.DB()
+	checkErrorPanic(err, "Failed to get MySQL sql.DB")
+	global.Mdbc = sqlDB
+
 	// set Pool
 	SetPool()
 
