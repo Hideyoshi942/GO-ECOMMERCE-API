@@ -1,1 +1,10 @@
-package rests
+@baseUrl = http://localhost:8080/api/v1/2026
+
+### User Registration
+POST {{baseUrl}}/user/register
+Content-Type: application/json
+
+{
+  "email": "unclekiet2424@gmail.com",
+  "purpose": "test"
+}
